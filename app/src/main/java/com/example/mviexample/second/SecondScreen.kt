@@ -80,22 +80,19 @@ fun SecondContent(viewModel: SecondViewModel, controller: Controller, theme: Lis
         }, modifier = Modifier.fillMaxSize()) {
         Box {
             Button(onClick = {
-                //viewModel.onShowBottomSheetClick()
-                coroutineScope.launch {
-                    sheetState.show()
-                }
+                viewModel.onShowBottomSheetClick()
             }) {
                 Text(text = "Show bottom sheet")
             }
 
-            /*if (bottomSheetState != SecondScreenBottomSheetState.None) {
+            if (bottomSheetState != SecondScreenBottomSheetState.None) {
                 LaunchedEffect(sheetState.currentValue) {
                     Log.d("myLogs", "LaunchedEffect")
                     coroutineScope.launch {
                         sheetState.show()
                     }
                 }
-            }*/
+            }
         }
     }
 }
