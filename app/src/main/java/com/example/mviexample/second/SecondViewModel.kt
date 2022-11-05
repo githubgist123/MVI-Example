@@ -19,6 +19,10 @@ class SecondViewModel : BaseViewModel<SecondState, SecondUiEvent>() {
         )
     }
 
+    fun onCloseBottomSheet() {
+        sendEvent(SecondUiEvent.ShowData(emptyList(), SecondScreenBottomSheetState.None))
+    }
+
     private fun sendEvent(event: SecondUiEvent) {
         reducer.sendEvent(event)
     }
@@ -28,7 +32,7 @@ class SecondViewModel : BaseViewModel<SecondState, SecondUiEvent>() {
         override fun reduce(oldState: SecondState, event: SecondUiEvent) {
             when (event) {
                 is SecondUiEvent.ShowData -> {
-                    setState(oldState.copy(isLoading = false))
+                    setState(oldState.copy(isLoading = false, bottomSheetState = event.bottomSheetState, theme = event.theme))
                 }
                 is SecondUiEvent.ShowBottomSheet -> {
                     setState(

@@ -6,20 +6,21 @@ import com.example.mviexample.base.UiState
 
 @Immutable
 sealed class SecondUiEvent : UiEvent {
-    object ShowData : SecondUiEvent()
+    data class ShowData(val theme: List<String>, val bottomSheetState: SecondScreenBottomSheetState) : SecondUiEvent()
     data class ShowBottomSheet(val theme: List<String>, val bottomSheetState: SecondScreenBottomSheetState) : SecondUiEvent()
 }
 
 @Immutable
 data class SecondState(
     val isLoading: Boolean,
-    val bottomSheetState: SecondScreenBottomSheetState = SecondScreenBottomSheetState.None,
+    val bottomSheetState: SecondScreenBottomSheetState,
     val theme: List<String>
 ) : UiState {
     companion object {
         fun initial() = SecondState(
             isLoading = false,
-            theme = emptyList()
+            theme = emptyList(),
+            bottomSheetState = SecondScreenBottomSheetState.None
         )
     }
 }

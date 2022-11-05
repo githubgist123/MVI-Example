@@ -40,8 +40,9 @@ fun SecondContent(viewModel: SecondViewModel, controller: Controller, theme: Lis
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = {
-            Log.d("myLogs", "confirmStateChange")
-            viewModel.onShowBottomSheetClick()
+            if (it == ModalBottomSheetValue.Expanded) {
+                viewModel.onCloseBottomSheet()
+            }
             it != ModalBottomSheetValue.HalfExpanded
         },
         skipHalfExpanded = true
@@ -49,12 +50,15 @@ fun SecondContent(viewModel: SecondViewModel, controller: Controller, theme: Lis
     val coroutineScope = rememberCoroutineScope()
 
     BackHandler(sheetState.isVisible) {
-        coroutineScope.launch { sheetState.hide() }
+        coroutineScope.launch {
+            sheetState.hide()
+        }
     }
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
+            Log.d("myLogs", "sheetContent")
             when (bottomSheetState) {
                 SecondScreenBottomSheetState.ShowThemeBottomSheetState -> {
                     Box(modifier = Modifier
@@ -76,18 +80,22 @@ fun SecondContent(viewModel: SecondViewModel, controller: Controller, theme: Lis
         }, modifier = Modifier.fillMaxSize()) {
         Box {
             Button(onClick = {
-                viewModel.onShowBottomSheetClick()
+                //viewModel.onShowBottomSheetClick()
+                coroutineScope.launch {
+                    sheetState.show()
+                }
             }) {
                 Text(text = "Show bottom sheet")
             }
 
-            if (!sheetState.isVisible && bottomSheetState != SecondScreenBottomSheetState.None) {
+            /*if (bottomSheetState != SecondScreenBottomSheetState.None) {
                 LaunchedEffect(sheetState.currentValue) {
+                    Log.d("myLogs", "LaunchedEffect")
                     coroutineScope.launch {
                         sheetState.show()
                     }
                 }
-            }
+            }*/
         }
     }
 }
